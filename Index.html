@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>I Am Sorry</title>
-
 <style>
 body {
   margin: 0;
@@ -17,49 +16,40 @@ body {
   text-align: center;
   overflow: hidden;
 }
-
 .card {
   background: white;
   padding: 35px 25px;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  max-width: 320px;
+  max-width: 350px;
   width: 90%;
 }
-
-.heart {
-  font-size: 32px;
-  color: #d62828;
-  margin-bottom: 10px;
-}
-
 h1 {
-  margin-bottom: 10px;
   color: #4b004b;
+  margin-bottom: 10px;
 }
-
 p {
   font-size: 16px;
   margin-bottom: 25px;
 }
-
 .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
   position: relative;
-  height: 70px;
+  height: 80px;
 }
-
 button {
   font-size: 16px;
   padding: 10px 22px;
   border-radius: 25px;
   border: none;
+  cursor: pointer;
 }
-
 #yes {
   background: #d62828;
   color: white;
 }
-
 #no {
   background: #e0cde9;
   color: #4b004b;
@@ -67,39 +57,22 @@ button {
   left: 50%;
   transform: translateX(-50%);
 }
-
-.shake {
-  animation: shake 0.3s infinite;
-}
-
-@keyframes shake {
-  0% { transform: translate(-50%, 0); }
-  25% { transform: translate(-48%, 0); }
-  50% { transform: translate(-52%, 0); }
-  75% { transform: translate(-48%, 0); }
-  100% { transform: translate(-50%, 0); }
-}
-
 .floating-heart {
   position: fixed;
   bottom: 20px;
   font-size: 20px;
   animation: float 2s ease forwards;
 }
-
 @keyframes float {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(-140px); }
 }
 </style>
 </head>
-
 <body>
 <div class="card" id="card">
-  <div class="heart">❤️</div>
   <h1>I am sorry…</h1>
-  <p>I truly mean it.<br>Do you forgive me?</p>
-
+  <p>I really mean it.<br>Do you forgive me?</p>
   <div class="buttons">
     <button id="yes">Yes</button>
     <button id="no">No</button>
@@ -110,45 +83,33 @@ button {
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const card = document.getElementById("card");
+let noTries = 0;
 
-let stage = 0;
-
-noBtn.addEventListener("mouseenter", panic);
-noBtn.addEventListener("touchstart", panic);
-
-function panic() {
-  stage++;
-
-  if (stage === 1) {
-    noBtn.classList.add("shake");
-  } 
-  else if (stage === 2) {
-    noBtn.classList.remove("shake");
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 80 - 40;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-  } 
-  else {
-    noBtn.style.transform = "translate(200vw, -200vh)";
-  }
-}
-
+// Yes button click
 yesBtn.addEventListener("click", () => {
   card.innerHTML = `
-    <div class="heart">❤️</div>
-    <h1>Thank you for forgiving me</h1>
-    <p>
-      I love you so much.<br>
-      I promise I’ll do better.
-    </p>
-    <p style="font-size:14px;opacity:0.7;">
-      Screenshot this and send it to me 💜
-    </p>
+    <h1>Thank you ❤️</h1>
+    <p>I love you so much.<br>I promise I’ll do better.</p>
   `;
-
-  for (let i = 0; i < 14; i++) spawnHeart();
+  for (let i = 0; i < 15; i++) spawnHeart();
 });
 
+// No button movement
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", moveNo); // mobile tap
+
+function moveNo() {
+  noTries++;
+  if (noTries >= 4) {
+    noBtn.style.display = "none"; // disappears after 4 tries
+    return;
+  }
+  const x = Math.random() * 180 - 90; // move left/right
+  const y = Math.random() * 60 - 30;  // move up/down
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+// Floating hearts on Yes
 function spawnHeart() {
   const h = document.createElement("div");
   h.className = "floating-heart";
