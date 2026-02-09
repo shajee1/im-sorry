@@ -1,154 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>I Am Sorry</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I Am Sorry</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #f4ecf7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #4b004b;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #f4ecf7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
 
-    .card {
-      background: white;
-      padding: 35px 25px;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      max-width: 320px;
-      width: 90%;
-      animation: fadeIn 0.8s ease;
-      position: relative;
-    }
+.card {
+  background: white;
+  padding: 35px 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  max-width: 320px;
+  width: 90%;
+}
 
-    h1 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
+.heart {
+  font-size: 32px;
+  color: #d62828;
+  margin-bottom: 10px;
+}
 
-    p {
-      font-size: 16px;
-      margin-bottom: 25px;
-    }
+h1 {
+  margin-bottom: 10px;
+  color: #4b004b;
+}
 
-    .heart {
-      font-size: 30px;
-      margin-bottom: 15px;
-      color: #d62828;
-    }
+p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
 
-    .buttons {
-      position: relative;
-      height: 70px;
-    }
+.buttons {
+  position: relative;
+  height: 70px;
+}
 
-    button {
-      font-size: 16px;
-      padding: 10px 22px;
-      border-radius: 25px;
-      border: none;
-      cursor: pointer;
-    }
+button {
+  font-size: 16px;
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: none;
+}
 
-    #yes {
-      background: #d62828;
-      color: white;
-      margin-right: 10px;
-    }
+#yes {
+  background: #d62828;
+  color: white;
+}
 
-    #no {
-      background: #e0cde9;
-      color: #4b004b;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+#no {
+  background: #e0cde9;
+  color: #4b004b;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.shake {
+  animation: shake 0.3s infinite;
+}
 
-    .floating-heart {
-      position: fixed;
-      bottom: 20px;
-      font-size: 20px;
-      animation: float 2s ease forwards;
-    }
+@keyframes shake {
+  0% { transform: translate(-50%, 0); }
+  25% { transform: translate(-48%, 0); }
+  50% { transform: translate(-52%, 0); }
+  75% { transform: translate(-48%, 0); }
+  100% { transform: translate(-50%, 0); }
+}
 
-    @keyframes float {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(-140px); }
-    }
-  </style>
+.floating-heart {
+  position: fixed;
+  bottom: 20px;
+  font-size: 20px;
+  animation: float 2s ease forwards;
+}
+
+@keyframes float {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-140px); }
+}
+</style>
 </head>
 
 <body>
-  <div class="card" id="card">
-    <div class="heart">❤️</div>
-    <h1>I am sorry…</h1>
-    <p>I really mean it.<br>Do you forgive me?</p>
+<div class="card" id="card">
+  <div class="heart">❤️</div>
+  <h1>I am sorry…</h1>
+  <p>I truly mean it.<br>Do you forgive me?</p>
 
-    <div class="buttons">
-      <button id="yes">Yes</button>
-      <button id="no">No</button>
-    </div>
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
   </div>
+</div>
 
-  <script>
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const card = document.getElementById("card");
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const card = document.getElementById("card");
 
-    let tries = 0;
+let stage = 0;
 
-    noBtn.addEventListener("mouseenter", () => {
-      tries++;
+noBtn.addEventListener("mouseenter", panic);
+noBtn.addEventListener("touchstart", panic);
 
-      if (tries >= 3) {
-        noBtn.style.transform = "translate(200vw, -200vh)";
-        return;
-      }
+function panic() {
+  stage++;
 
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 80 - 40;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    });
+  if (stage === 1) {
+    noBtn.classList.add("shake");
+  } 
+  else if (stage === 2) {
+    noBtn.classList.remove("shake");
+    const x = Math.random() * 200 - 100;
+    const y = Math.random() * 80 - 40;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  } 
+  else {
+    noBtn.style.transform = "translate(200vw, -200vh)";
+  }
+}
 
-    yesBtn.addEventListener("click", () => {
-      card.innerHTML = `
-        <div class="heart">❤️</div>
-        <h1>Thank you…</h1>
-        <p>
-          I love you so much.<br>
-          I promise to do better.
-        </p>
-        <p style="font-size:14px; opacity:0.7;">
-          Screenshot this and send it to me 💜
-        </p>
-      `;
+yesBtn.addEventListener("click", () => {
+  card.innerHTML = `
+    <div class="heart">❤️</div>
+    <h1>Thank you for forgiving me</h1>
+    <p>
+      I love you so much.<br>
+      I promise I’ll do better.
+    </p>
+    <p style="font-size:14px;opacity:0.7;">
+      Screenshot this and send it to me 💜
+    </p>
+  `;
 
-      for (let i = 0; i < 12; i++) {
-        spawnHeart();
-      }
-    });
+  for (let i = 0; i < 14; i++) spawnHeart();
+});
 
-    function spawnHeart() {
-      const h = document.createElement("div");
-      h.className = "floating-heart";
-      h.innerText = "❤️";
-      h.style.left = Math.random() * window.innerWidth + "px";
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), 2000);
-    }
-  </script>
+function spawnHeart() {
+  const h = document.createElement("div");
+  h.className = "floating-heart";
+  h.innerText = "❤️";
+  h.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 2000);
+}
+</script>
 </body>
 </html>
